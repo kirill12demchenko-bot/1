@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Поиск - Football Analytics{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2 class="mb-4">Результаты поиска: "{{ query }}"</h2>
+        
+        {% if results.players|length == 0 and results.teams|length == 0 %}
+        <div class="alert alert-warning" role="alert">
+            Ничего не найдено по запросу "{{ query }}"
+        </div>
+        {% endif %}
+        
+        {% if results.players|length > 0 %}
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5>Найденные игроки ({{ results.players|length }})</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for player in results.players %}
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ player.name }}</h5>
+                                <p class="card-text">
+                                    <span class="badge bg-secondary">{{ player.team }}</span>
+                                    <span class="badge {% if player.position == 'FW' %}bg-danger{% else %}bg-warning{% endif %}">
+                                        {{ player.position }}
+                                    </span>
+                                </p>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-danger">
+                                        <i class="bi bi-bullseye"></i> {{ player.goals }} голов
+                                    </span>
+                                    <span class="text-success">
+                                        <i class="bi bi-share"></i> {{ player.assists }} передач
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if results.teams|length > 0 %}
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5>Найденные команды ({{ results.teams|length }})</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for team in results.teams %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">{{ team.name }}</h5>
+                                <p class="card-text">
+                                    <span class="badge bg-info">{{ team.country }}</span>
+                                </p>
+                                <div class="mt-3">
+                                    <p class="mb-1">Сыграно матчей: {{ team.matches_played }}</p>
+                                    <p class="mb-0">
+                                        <strong>Очки: </strong>
+                                        <span class="badge bg-success">{{ team.points }}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="mt-4">
+            <a href="/" class="btn btn-primary">На главную</a>
+            <a href="/players" class="btn btn-outline-primary">Все игроки</a>
+            <a href="/teams" class="btn btn-outline-success">Все команды</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
