@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Главная - Football Analytics{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body text-center">
+                <h1>{{ teams_count }}</h1>
+                <p class="card-text">Команд</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body text-center">
+                <h1>{{ players_count }}</h1>
+                <p class="card-text">Игроков</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-body text-center">
+                <h1>{{ matches_count }}</h1>
+                <p class="card-text">Матчей</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3>Статистика</h3>
+            </div>
+            <div class="card-body">
+                <div id="graph"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>О проекте</h4>
+            </div>
+            <div class="card-body">
+                <p>Аналитическая платформа для футбольной статистики с открытым исходным кодом.</p>
+                <ul>
+                    <li>Анализ матчей в реальном времени</li>
+                    <li>Статистика игроков и команд</li>
+                    <li>Визуализация данных</li>
+                    <li>API для разработчиков</li>
+                </ul>
+                <a href="https://github.com/yourusername/football-analytics" class="btn btn-dark">
+                    <i class="bi bi-github"></i> GitHub репозиторий
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Загрузка графика через API
+    fetch('/api/stats')
+        .then(response => response.json())
+        .then(data => {
+            if (data.graph) {
+                const graph = JSON.parse(data.graph);
+                Plotly.newPlot('graph', graph.data, graph.layout);
+            }
+        });
+</script>
+{% endblock %}
