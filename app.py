@@ -8,7 +8,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your-secret-key-here'
+
 
 # Загрузка данных
 def load_data():
